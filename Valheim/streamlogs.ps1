@@ -1,0 +1,1 @@
+az container attach --name valheim-sanitysrefuge --resource-group gaming
