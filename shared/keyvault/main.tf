@@ -32,3 +32,21 @@ resource "azurerm_key_vault" "gaming_keyvault" {
     ]
   }
 }
+
+# Create (and display) an SSH key
+resource "tls_private_key" "vm_ssh_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "azurerm_key_vault_secret" "ssh_private_key" {
+  name         = "vm-ssh-key-private"
+  value        = tls_private_key.vm_ssh_key.private_key_openssh
+  key_vault_id = azurerm_key_vault.gaming_keyvault.id
+}
+
+resource "azurerm_key_vault_secret" "ssh_public_key" {
+  name         = "vm-ssh-key-public"
+  value        = tls_private_key.vm_ssh_key.public_key_openssh
+  key_vault_id = azurerm_key_vault.gaming_keyvault.id
+}

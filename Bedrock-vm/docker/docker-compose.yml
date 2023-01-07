@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  bds:
+    image: itzg/minecraft-bedrock-server
+    restart: always
+    environment:
+      EULA: "TRUE"
+      GAMEMODE: survival
+      DIFFICULTY: normal
+      SERVER_NAME: "The Wilds"
+      LEVEL_NAME: "Wilds"
+      ALLOW_CHEATS: "false"
+      ENABLE_LAN_VISIBILITY: "false"
+      MAX_THREADS: 0
+    ports:
+      - 19132:19132/udp
+    volumes:
+      - mcDataVolume:/data
+    stdin_open: true
+    tty: true
+
+volumes:
+  mcDataVolume:
+    driver: local
+    driver_opts:
+      type: "cifs"
+      o: "mfsymlinks,vers=3.0,username=MyStorageAccount,password=******==,addr=MyStorageAccount.file.core.windows.net"
+      device: "//MyStorageAccount.file.core.windows.net/myFileShare"

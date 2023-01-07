@@ -6,16 +6,12 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~>3.0"
     }
-    tls = {
-      source = "hashicorp/tls"
-      version = "~>4.0"
-    }
   }
   backend "azurerm" {
     resource_group_name  = "gaming"
     storage_account_name = "persistantgamestorage"
     container_name       = "tfstate"
-    key                  = "gaming-keyvault.tfstate"
+    key                  = "minecraft-marctv-thewilds.tfstate"
   }
 }
 
