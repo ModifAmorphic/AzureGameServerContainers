@@ -42,6 +42,7 @@ resource "azurerm_public_ip" "public_ip" {
   location            = data.azurerm_resource_group.gaming.location
   resource_group_name = data.azurerm_resource_group.gaming.name
   allocation_method   = "Dynamic"
+  domain_name_label   = "${var.dnsName}"
 }
 
 # Create network interface

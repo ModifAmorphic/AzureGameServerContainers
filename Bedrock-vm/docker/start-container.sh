@@ -25,4 +25,4 @@ echo "Mounting Azure File Share $smbPath"
 sudo mount -t cifs $smbPath $mntPath -o username=$storageAccount,password="$storageKey",serverino,nosharesock,actimeo=30
 
 echo "Starting Bedrock Container - The Wilds"
-docker compose up -f /opt/bedrock-thewilds/docker-compose.yml
+docker compose -f /opt/bedrock-thewilds/docker-compose.yml up
