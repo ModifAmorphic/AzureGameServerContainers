@@ -140,6 +140,12 @@ resource "azurerm_role_assignment" "storage_share_role_assignment" {
   principal_id         = azurerm_linux_virtual_machine.games_host_vm.identity[0].principal_id
 }
 
+resource "azurerm_role_assignment" "storage_read_data_role_assignment" {
+  scope                = data.azurerm_subscription.primary.id
+  role_definition_name = "Reader and Data Access"
+  principal_id         = azurerm_linux_virtual_machine.games_host_vm.identity[0].principal_id
+}
+
 # Needs SSH access. Public IP or Bastion Standard
 # #Copy over the docker install script.
 # resource "null_resource" remoteExecProvisionerWFolder {
