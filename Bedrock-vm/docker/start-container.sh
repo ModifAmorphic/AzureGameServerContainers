@@ -6,7 +6,7 @@ azureShareName="minecraft-thewilds-data"
 dockerVolName="mcwilds"
 
 #Login to Azure using Managed Identity
-az login --identity
+az login --identity --output none
 
 # This command assumes you have logged in with az login
 httpEndpoint=$(az storage account show \
@@ -21,6 +21,8 @@ mntPath="/azmounts/$storageAccount/$azureShareName"
 mkdir -p "$mntPath"
 
 storageKey=$(az storage account keys list --resource-group ${resourceGroup} --account-name ${storageAccount} --query [0].value -otsv)
+echo "Mounting Azure File Share $smbPath"
 sudo mount -t cifs $smbPath $mntPath -o username=$storageAccount,password="$storageKey",serverino,nosharesock,actimeo=30
 
-docker compose up
+echo "Starting Bedrock Container - The Wilds"
+docker compose up -f /opt/bedrock-thewilds/docker-compose.yml

@@ -6,3 +6,4 @@ curl -sL https://raw.githubusercontent.com/ModifAmorphic/AzureGameServerContaine
 curl -sL https://raw.githubusercontent.com/ModifAmorphic/AzureGameServerContainers/main/Bedrock-vm/docker/bedrock-thewilds.service > /etc/systemd/system/bedrock-thewilds.service
 
 systemctl enable bedrock-thewilds
+systemctl start bedrock-thewilds
