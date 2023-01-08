@@ -22,11 +22,18 @@ data "azurerm_key_vault_secret" "server_pass" {
   key_vault_id = data.azurerm_key_vault.gaming_keyvault.id
 }
 
+data "azurerm_key_vault_secret" "discord_valheim_webhook" {
+  name      = "ValheimSanitysRefugeDiscordWebhook"
+  key_vault_id = data.azurerm_key_vault.gaming_keyvault.id
+}
+
 locals {
-  server_pass = {
+  env_secrets = {
     SERVER_PASS = "${data.azurerm_key_vault_secret.server_pass.value}"
+    PRE_BOOTSTRAP_HOOK="curl -sfSL -X POST -H \"Content-Type: application/json\" -d \"${var.discord-starting-json}\" ${data.azurerm_key_vault_secret.discord_valheim_webhook.value}"
+    POST_SERVER_LISTENING_HOOK="curl -sfSL -X POST -H \"Content-Type: application/json\" -d \"${var.discord-ready-json}\" ${data.azurerm_key_vault_secret.discord_valheim_webhook.value}"
   }
-  server_env_vars = merge(var.env-vars, local.server_pass)
+  server_env_vars = merge(local.env_secrets, var.env-vars)
 }
 
 ## NSG Rules

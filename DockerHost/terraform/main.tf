@@ -65,34 +65,6 @@ resource "azurerm_network_interface_security_group_association" "nsg_nic1_assoc"
   network_security_group_id = data.azurerm_network_security_group.gaming_nsg.id
 }
 
-# ## NSG Rules
-# resource "azurerm_network_security_rule" "nsg_inbound_rule1" {
-#   name                       = "MinecraftServersUdp"
-#   priority                   = 210
-#   direction                  = "Inbound"
-#   access                     = "Allow"
-#   protocol                   = "Udp"
-#   source_port_range          = "*"
-#   destination_port_range     = "19132"
-#   source_address_prefix      = "*"
-#   destination_address_prefix = "*"
-#   resource_group_name         = data.azurerm_resource_group.gaming.name
-#   network_security_group_name = data.azurerm_network_security_group.gaming_nsg.name
-# }
-# resource "azurerm_network_security_rule" "nsg_inbound_rule2" {
-#   name                       = "MinecraftServersTcp"
-#   priority                   = 220
-#   direction                  = "Inbound"
-#   access                     = "Allow"
-#   protocol                   = "Tcp"
-#   source_port_range          = "*"
-#   destination_port_range     = "19132"
-#   source_address_prefix      = "*"
-#   destination_address_prefix = "*"
-#   resource_group_name         = data.azurerm_resource_group.gaming.name
-#   network_security_group_name = data.azurerm_network_security_group.gaming_nsg.name
-# }
-
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "games_host_vm" {
   name                  = var.vmName
@@ -132,6 +104,21 @@ resource "azurerm_linux_virtual_machine" "games_host_vm" {
   # boot_diagnostics {
   #   storage_account_uri = azurerm_storage_account.my_storage_account.primary_blob_endpoint
   # }
+}
+
+resource "azurerm_dev_test_global_vm_shutdown_schedule" "shutdown_schedule" {
+  virtual_machine_id = azurerm_linux_virtual_machine.games_host_vm.id
+  location           = data.azurerm_resource_group.gaming.location
+  enabled            = true
+
+  daily_recurrence_time = "2330"
+  timezone              = "Mountain Standard Time"
+
+  notification_settings {
+    enabled         = false
+    # time_in_minutes = "60"
+    # webhook_url     = "https://sample-webhook-url.example.com"
+  }
 }
 
 # Grant VM's managed identity access to storage account file shares

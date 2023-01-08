@@ -39,3 +39,12 @@ variable "env-vars" {
   type        = map
   default     = {}
 }
+
+variable "discord-starting-json" {
+    description = "Escaped json message to post to discord when the server is starting"
+    type        = string
+}
+variable "discord-ready-json" {
+    description = "Escaped json message to post to discord when the server is ready for connections"
+    type        = string
+}

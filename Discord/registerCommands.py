@@ -19,15 +19,15 @@ json = {
                 {
                     "name": "Valheim",
                     "value": "valheim-sanitysrefuge"
+                },
+                {
+                    "name": "Minecraft",
+                    "value": "vm-games-host"
                 }
                 # ,{
                 #     "name": "Astroneer",
                 #     "value": "game_astroneer"
                 # },
-                # {
-                #     "name": "Minecraft",
-                #     "value": "game_minecraft"
-                # }
             ]
         }
     ]

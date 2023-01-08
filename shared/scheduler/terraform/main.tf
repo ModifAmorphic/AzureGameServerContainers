@@ -1,27 +1,14 @@
 data "azurerm_subscription" "primary" {
 }
 
-resource "azurerm_role_definition" "container_manager_role" {
-  name        = "Container Instance Manager"
-  scope       = data.azurerm_subscription.primary.id
-  description = "Allow full access to the Azure Container Instance container group resources. Custom role created with Terraform."
-
-  permissions {
-    actions     = [
-      "Microsoft.ContainerInstance/containerGroups/*",
-      "Microsoft.Resources/subscriptions/resourcegroups/read"
-      ]
-    not_actions = []
-  }
-
-  assignable_scopes = [
-    data.azurerm_subscription.primary.id, # /subscriptions/00000000-0000-0000-0000-000000000000
-  ]
-}
-
 resource "azurerm_resource_group" "schedulers" {
   location = "southcentralus"
   name     = "gaming-schedulers"
+}
+
+data "azurerm_application_insights" "schedulerai" {
+  name                = "gameservers-scheduler"
+  resource_group_name = azurerm_resource_group.schedulers.name
 }
 
 # data "azurerm_storage_account" "gamestorage" {
@@ -65,13 +52,56 @@ resource "azurerm_linux_function_app" "scheduler" {
     }
   }
   app_settings = {
-    DiscordStartServerAppKey = "02d204735b24106608045d758f1998c62608eabb705e07cf8683fc0451a6ad42"
+    DiscordStartServerAppKey = "02d204735b24106608045d758f1998c62608eabb705e07cf8683fc0451a6ad42",
+    APPINSIGHTS_INSTRUMENTATIONKEY = "${data.azurerm_application_insights.schedulerai.instrumentation_key}"
+    APPLICATIONINSIGHTS_CONNECTION_STRING = "${data.azurerm_application_insights.schedulerai.connection_string}"
   }
+}
+
+resource "azurerm_role_definition" "container_manager_role" {
+  name        = "Container Instance Manager"
+  scope       = data.azurerm_subscription.primary.id
+  description = "Allow full access to the Azure Container Instance container group resources. Custom role created with Terraform."
+
+  permissions {
+    actions     = [
+      "Microsoft.ContainerInstance/containerGroups/*",
+      "Microsoft.Resources/subscriptions/resourcegroups/read"
+      ]
+    not_actions = []
+  }
+
+  assignable_scopes = [
+    data.azurerm_subscription.primary.id, # /subscriptions/00000000-0000-0000-0000-000000000000
+  ]
+}
+
+resource "azurerm_role_definition" "vm_scheduler_role" {
+  name        = "Virtual Machine Scheduler"
+  scope       = data.azurerm_subscription.primary.id
+  description = "Allows listing, starting and stopping of virtual machines. Custom role created with Terraform."
+
+  permissions {
+    actions     = [
+      "Microsoft.Compute/virtualMachines/*"
+      ]
+    not_actions = []
+  }
+
+  assignable_scopes = [
+    data.azurerm_subscription.primary.id, # /subscriptions/00000000-0000-0000-0000-000000000000
+  ]
 }
 
 # Assign the Container Manager role to the function app's Managed Identity
 resource "azurerm_role_assignment" "container_manager_role_assignment" {
   scope                = data.azurerm_subscription.primary.id
   role_definition_name = "${azurerm_role_definition.container_manager_role.name}"
+  principal_id         = azurerm_linux_function_app.scheduler.identity[0].principal_id
+}
+
+resource "azurerm_role_assignment" "vm_scheduler_role_assignment" {
+  scope                = data.azurerm_subscription.primary.id
+  role_definition_name = "${azurerm_role_definition.vm_scheduler_role.name}"
   principal_id         = azurerm_linux_function_app.scheduler.identity[0].principal_id
 }

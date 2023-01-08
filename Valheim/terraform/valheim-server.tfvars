@@ -15,6 +15,7 @@ env-vars = {
     RESTART_CRON="35 8 * * *"
     RESTART_IF_IDLE="true"
     TZ="UTC"
-    PRE_BOOTSTRAP_HOOK="curl -sfSL -X POST -H \"Content-Type: application/json\" -d \"{\\\"content\\\":\\\"Sanity's Refuge Valheim server is starting...\\\"}\" https://discord.com/api/webhooks/1060706703487803433/9vClfWZMX05Odsmkoete3LLKVk5e4WgLuE9q3QPvqra6KsaRtyhooGF6r7csh9Rq6y15"
-    POST_SERVER_LISTENING_HOOK="curl -sfSL -X POST -H \"Content-Type: application/json\" -d \"{\\\"content\\\":\\\"Sanity's Refuge Valheim server is running and ready for players!\\\"}\" https://discord.com/api/webhooks/1060706703487803433/9vClfWZMX05Odsmkoete3LLKVk5e4WgLuE9q3QPvqra6KsaRtyhooGF6r7csh9Rq6y15"
 }
+
+discord-starting-json = "{\\\"content\\\":\\\"Sanity's Refuge Valheim server is starting...\\\"}"
+discord-ready-json = "{\\\"content\\\":\\\"Sanity's Refuge Valheim server is running and ready for players!\\\"}"

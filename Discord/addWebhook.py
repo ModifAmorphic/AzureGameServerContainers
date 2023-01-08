@@ -2,11 +2,11 @@ import requests
 import subprocess
 import sys
 
-url = "https://discord.com/api/v10/channels/176837910417506304/webhooks"
+url = "https://discord.com/api/v10/channels/808015740648947764/webhooks"
 
 # This is an example CHAT_INPUT or Slash Command, with a type of 1
 json = {
-    "name": "ServerStatus",
+    "name": "ServerStarter"
 }
 
 bottoken = subprocess.check_output('az keyvault secret show --name DiscordServerStarterBotToken --vault-name gaming-keyvault --query value -otsv', shell=True)
