@@ -16,14 +16,14 @@ services:
     ports:
       - 19132:19132/udp
     volumes:
-      - mcDataVolume:/data
+      - mcwilds:/data
     stdin_open: true
     tty: true
 
-volumes:
-  mcDataVolume:
-    driver: local
-    driver_opts:
-      type: "cifs"
-      o: "mfsymlinks,vers=3.0,username=MyStorageAccount,password=******==,addr=MyStorageAccount.file.core.windows.net"
-      device: "//MyStorageAccount.file.core.windows.net/myFileShare"
+# volumes:
+#   mcDataVolume:
+#     driver: local
+#     driver_opts:
+#       type: "cifs"
+#       o: "mfsymlinks,vers=3.0,username=MyStorageAccount,password=******==,addr=MyStorageAccount.file.core.windows.net"
+#       device: "//MyStorageAccount.file.core.windows.net/myFileShare"
