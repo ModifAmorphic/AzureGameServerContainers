@@ -28,7 +28,8 @@ ENV	SERVER_USER="${server_user}" \
 #BepInEx specific env vars
 ENV BEPINEX_PATH="${SERVER_PATH}/BepInEx" \
 	PLUGINS_PATH="${SERVER_PATH}/BepInEx/plugins" \
- 	PLUGINS_CONFIG_PATH="${SERVER_PATH}/BepInEx/config"
+ 	PLUGINS_CONFIG_PATH="${SERVER_PATH}/BepInEx/config" \
+	LOGFILE_PATH="${SERVER_PATH}/BepInEx/LogOutput.log"
 	
 # Configurable Environment
 ENV SERVER_NAME="Valheim Dedicated Server" \

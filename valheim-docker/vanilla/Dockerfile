@@ -37,6 +37,7 @@ ENV	SERVER_USER="${server_user}" \
  	STEAM_PATH="/home/${server_user}/${steam_dir}" \
 	MA_LIBS_PATH="/home/${server_user}/ma-libs" \
 	LOG_PATH="/home/${server_user}/valheim-logs" \
+	LOGFILE_PATH="/home/${server_user}/valheim-logs/valheim-server.log" \
     LOGGER_PATH="/home/${server_user}/ma-libs/logger.sh" \
 	SERVER_PATH="/home/${server_user}/valheim-server" \
 	SAVE_PATH="/home/${server_user}/valheim-saves" \
@@ -60,6 +61,7 @@ COPY --from=steam_installer /Steam $STEAM_PATH
 # Copy entry and startup scripts
 COPY ./entry.sh /entry.sh
 COPY ./init/ $USER_HOME
+COPY ./limits.conf /etc/security/
 
 ARG symlink="ln -s \"${STEAM_PATH}/linux32/steamcmd\" \"${STEAM_PATH}/linux32/steam\" \
 				&& ln -s \"${STEAM_PATH}/linux32/steamclient.so\" \"${USER_HOME}/.steam/sdk32/steamclient.so\" \

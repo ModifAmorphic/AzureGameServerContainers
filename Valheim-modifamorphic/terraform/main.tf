@@ -70,6 +70,12 @@ resource "azurerm_storage_share" "valheim-backups" {
   quota                = 5
 }
 
+resource "azurerm_storage_share" "valheim-logs" {
+  name                 = var.azure_logs_share
+  storage_account_name = data.azurerm_storage_account.gamestorage.name
+  quota                = 5
+}
+
 resource "azurerm_container_group" "valheim" {
   name                = "${var.container_name}"
   location            = data.azurerm_resource_group.gaming.location
@@ -98,7 +104,7 @@ resource "azurerm_container_group" "valheim" {
 
     volume {
       name       = var.azure_saves_share
-      mount_path = "/home/valheim/valheim-worlds"
+      mount_path = "/home/valheim/valheim-saves"
       read_only  = false
       share_name = azurerm_storage_share.valheim-saves.name
 
@@ -121,6 +127,16 @@ resource "azurerm_container_group" "valheim" {
       mount_path = "/home/valheim/valheim-backups"
       read_only  = false
       share_name = azurerm_storage_share.valheim-backups.name
+
+      storage_account_name = data.azurerm_storage_account.gamestorage.name
+      storage_account_key  = data.azurerm_storage_account.gamestorage.primary_access_key
+    }
+
+    volume {
+      name       = var.azure_logs_share
+      mount_path = "/home/valheim/valheim-logs"
+      read_only  = false
+      share_name = azurerm_storage_share.valheim-logs.name
 
       storage_account_name = data.azurerm_storage_account.gamestorage.name
       storage_account_key  = data.azurerm_storage_account.gamestorage.primary_access_key

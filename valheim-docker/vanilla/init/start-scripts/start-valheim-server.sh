@@ -17,8 +17,8 @@ export SteamAppId=892970
         -logFile "${SERVER_LOG_FILE}" \
         -saveinterval ${SAVE_INTERVAL} \
         -backups ${LAST_X_SAVES_RETAINED} \
-        $CROSSPLAY_SWITCH \
-        &  #Start in background
+        $CROSSPLAY_SWITCH 
+        #&  #Start in background
 
 #Export the Process ID so process can be waited on
 export SERVER_PID=$!

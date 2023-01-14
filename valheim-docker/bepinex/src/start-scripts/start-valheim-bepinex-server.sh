@@ -25,7 +25,8 @@ export SteamAppId=892970
         -saveinterval ${SAVE_INTERVAL} \
         -backups ${LAST_X_SAVES_RETAINED} \
         $CROSSPLAY_SWITCH \
-        &  #Start in background
+        > /dev/null 2>&1 #quiet you!
+        #&  #Start in background
 
 #Export the Process ID so process can be waited on
 export SERVER_PID=$!

@@ -37,9 +37,9 @@ logPipe() {
 logPipeX() {
     local _source=$2
     while read _msg; do
-        if [[ "$_msg" == "ERROR"* ]]; then 
+        if [[ "$_msg" == "ERROR"* ]] || [[ "$_msg" == "[Error"* ]]; then 
             logError "$_msg" "$_source"
-        elif [[ "$_msg" == "WARNING"* ]]; then 
+        elif [[ "$_msg" == "WARNING"* ]] || [[ "$_msg" == "[Warning"* ]]; then 
             logWarn "$_msg" "$_source"
         else
             log "$_msg" "$_source"
@@ -51,5 +51,5 @@ addLogPrefix()
 {
     local -n ___msgRef=$1; local _source="$2"
     
-    ___msgRef="`date --utc +%T` [${_source}] - ${___msgRef}"
+    ___msgRef="[${_source}] `date --utc +%T` - ${___msgRef}"
 }

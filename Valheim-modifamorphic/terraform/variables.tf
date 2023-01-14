@@ -45,6 +45,12 @@ variable "azure_backups_share" {
     default     = "valheim-backups"
 }
 
+variable "azure_logs_share" {
+    description = "Storage account share name for mounting the /home/steam/logs directory"
+    type        = string
+    default     = "valheim-logs"
+}
+
 variable "env_vars" {
   description = "Env Variables for Valheim server startup"
   type        = map
