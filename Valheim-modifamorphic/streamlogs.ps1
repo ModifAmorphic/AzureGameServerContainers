@@ -1,0 +1,1 @@
+az container attach --name valheim-modifamorphic-sanitysrefuge --resource-group gaming

@@ -30,10 +30,10 @@ data "azurerm_key_vault_secret" "discord_valheim_webhook" {
 locals {
   env_secrets = {
     SERVER_PASS = "${data.azurerm_key_vault_secret.server_pass.value}"
-    PRE_BOOTSTRAP_HOOK="curl -sfSL -X POST -H \"Content-Type: application/json\" -d \"${var.discord-starting-json}\" ${data.azurerm_key_vault_secret.discord_valheim_webhook.value}"
-    POST_SERVER_LISTENING_HOOK="curl -sfSL -X POST -H \"Content-Type: application/json\" -d \"${var.discord-ready-json}\" ${data.azurerm_key_vault_secret.discord_valheim_webhook.value}"
+    PRE_BOOTSTRAP_HOOK="curl -sfSL -X POST -H \"Content-Type: application/json\" -d \"${var.discord_starting_json}\" ${data.azurerm_key_vault_secret.discord_valheim_webhook.value}"
+    POST_SERVER_LISTENING_HOOK="curl -sfSL -X POST -H \"Content-Type: application/json\" -d \"${var.discord_ready_json}\" ${data.azurerm_key_vault_secret.discord_valheim_webhook.value}"
   }
-  server_env_vars = merge(local.env_secrets, var.env-vars)
+  server_env_vars = merge(local.env_secrets, var.env_vars)
 }
 
 ## NSG Rules
@@ -65,7 +65,7 @@ resource "azurerm_storage_share" "valheim-server" {
 }
 
 resource "azurerm_container_group" "valheim" {
-  name                = "${var.container-name}"
+  name                = "${var.container_name}"
   location            = data.azurerm_resource_group.gaming.location
   resource_group_name = data.azurerm_resource_group.gaming.name
   ip_address_type     = "Public"
@@ -73,7 +73,7 @@ resource "azurerm_container_group" "valheim" {
   os_type             = "Linux"
 
   container {
-    name   = var.container-name
+    name   = var.container_name
     image  = "lloesche/valheim-server"
     cpu    = var.cpu
     memory = var.memory

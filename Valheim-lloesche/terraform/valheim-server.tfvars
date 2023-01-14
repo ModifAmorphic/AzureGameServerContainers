@@ -1,4 +1,4 @@
-container-name = "valheim-sanitysrefuge"
+container_name = "valheim-sanitysrefuge"
 dns-name = "sanitysrefuge"
 cpu = "2"
 memory = "4"
@@ -6,7 +6,7 @@ memory = "4"
 config-share = "valheim-sanitysrefuge-config"
 server-share = "valheim-sanitysrefuge-server"
 
-env-vars = {
+env_vars = {
     SERVER_NAME="Sanity's Refuge"
     WORLD_NAME="TheWilds"
     SERVER_PUBLIC="false"
@@ -17,5 +17,5 @@ env-vars = {
     TZ="UTC"
 }
 
-discord-starting-json = "{\\\"content\\\":\\\"Sanity's Refuge Valheim server is starting...\\\"}"
-discord-ready-json = "{\\\"content\\\":\\\"Sanity's Refuge Valheim server is running and ready for players!\\\"}"
+discord_starting_json = "{\\\"content\\\":\\\"Sanity's Refuge Valheim server is starting...\\\"}"
+discord_ready_json = "{\\\"content\\\":\\\"Sanity's Refuge Valheim server is running and ready for players!\\\"}"

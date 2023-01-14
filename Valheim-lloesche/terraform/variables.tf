@@ -1,4 +1,4 @@
-variable "container-name" {
+variable "container_name" {
     description = "Name of the running Valheim Server container"
     type        = string
     default     = "valheim-server"
@@ -34,17 +34,17 @@ variable "server-share" {
     default     = "valheim-server"
 }
 
-variable "env-vars" {
+variable "env_vars" {
   description = "Env Variables for Valheim server startup"
   type        = map
   default     = {}
 }
 
-variable "discord-starting-json" {
+variable "discord_starting_json" {
     description = "Escaped json message to post to discord when the server is starting"
     type        = string
 }
-variable "discord-ready-json" {
+variable "discord_ready_json" {
     description = "Escaped json message to post to discord when the server is ready for connections"
     type        = string
 }
