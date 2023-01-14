@@ -11,21 +11,21 @@ log() {
     local _msg=$1; local _source=$2
     
     addLogPrefix _msg $_source
-    printf "${NORMAL}%s\n" "$_msg"
+    printf "%s\n" "$_msg"
 }
 
 logError() {
     local _msg=$1; local _source=$2
     
     addLogPrefix _msg $_source
-    >&2 printf  "${RED}%s\n${NORMAL}" "$_msg"
+    >&2 printf  "${RED}%s${NORMAL}\n" "$_msg"
 }
 
 logWarn() {
     local _msg=$1; local _source=$2
     
     addLogPrefix _msg $_source
-    printf  "${YELLOW}%s\n${NORMAL}" "$_msg"
+    printf  "${YELLOW}%s${NORMAL}\n" "$_msg"
 }
 
 logPipe() {

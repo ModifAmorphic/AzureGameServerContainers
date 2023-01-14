@@ -3,14 +3,14 @@
 #set -e
 
 main() {
-    if [[ -z "$THUNDERSTORE_PLUGINS" ]]; then
-        llog "No plugins set in THUNDERSTORE_PLUGINS" 
+    if [[ -z "$THUNDERSTORE_MODS" ]]; then
+        llog "No plugins set in THUNDERSTORE_MODS" 
         return 0
     fi
 
     local namespace; local name; local version;
 
-    jq -c '.[]' <<< $THUNDERSTORE_PLUGINS | 
+    jq -c '.[]' <<< $THUNDERSTORE_MODS | 
     while read -r plugin
     do
         namespace=$(jq -r '.namespace' <<< "$plugin");
@@ -19,6 +19,8 @@ main() {
         #printf '%s\t%s\t%s\n' "$namespace" "$name" "$version";
         downloadPlugin "$namespace" "$name" "$version"
     done
+
+    [[ $PRUNE_MODS -eq 1 ]] && prunePlugins
 }
 
 getInstalledVersion() {
@@ -98,6 +100,33 @@ downloadPlugin() {
         rm -r "$tmpDir"
         #printf -- "$version" > "$versionFile"
     fi
+}
+
+prunePlugins() {
+    declare -A plugins
+    llog "Pruning mods..."
+
+    for k in $(jq '. | keys | .[]' <<< "$THUNDERSTORE_MODS"); do
+        local plugin=$(jq -r ".[$k]" <<< "$THUNDERSTORE_MODS");
+        local namespace=$(jq -r '.namespace' <<< "$plugin");
+        local name=$(jq -r '.name' <<< "$plugin");
+        local modIndex="${namespace}-${name}/"
+        plugins["${modIndex}"]="${namespace}-${name}"
+    done
+    local currentPath="$(pwd)"
+    
+    cd $PLUGINS_PATH
+    local pruned=0
+    for d in */ ; do
+        llog "Checking ${plugins[$d]}"
+        if [[ ! -v plugins[$d] ]]; then
+            rm -r $d
+            llog "Removed mod \"$d\""
+            ((++pruned))
+        fi
+    done
+    cd $currentPath
+    llog "Pruned ${pruned} mods"
 }
 
 main

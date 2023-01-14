@@ -42,7 +42,8 @@ ENV SERVER_NAME="Valheim Dedicated Server" \
 	SAVE_INTERVAL=900 \
 	CUSTOM_START_SCRIPT="init-bepinex.sh" \
 	THUNDERSTORE_API_URL="https://valheim.thunderstore.io/api" \
-	THUNDERSTORE_PLUGINS=''
+	THUNDERSTORE_MODS='' \
+	PRUNE_MODS=0
 
 WORKDIR "$USER_HOME"
 
