@@ -36,21 +36,6 @@ locals {
   server_env_vars = merge(local.env_secrets, var.env_vars)
 }
 
-## NSG Rules
-# resource "azurerm_network_security_rule" "valheim-servers" {
-#   name                       = "ValheimServers"
-#   priority                   = 100
-#   direction                  = "Inbound"
-#   access                     = "Allow"
-#   protocol                   = "Udp"
-#   source_port_range          = "*"
-#   destination_port_range     = "2456-2457"
-#   source_address_prefix      = "*"
-#   destination_address_prefix = "*"
-#   resource_group_name         = data.azurerm_resource_group.gaming.name
-#   network_security_group_name = data.azurerm_network_security_group.gaming-nsg.name
-# }
-
 ##Storage Account File Shares
 resource "azurerm_storage_share" "valheim-saves" {
   name                 = var.azure_saves_share

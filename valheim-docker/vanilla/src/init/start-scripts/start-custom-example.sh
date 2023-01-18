@@ -22,7 +22,7 @@ export SteamAppId=892970
         -public $IS_PUBLIC \
         -logFile "$logFile" \
         -saveinterval $SAVE_INTERVAL \
-        -backups $LAST_X_SAVES_RETAINED \
+        -backups $X_SAVES_RETAINED \
         $crossplaySwitch \
         & #Start in background
 

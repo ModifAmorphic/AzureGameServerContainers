@@ -1,9 +1,9 @@
-ARG server_user="valheim"
-ARG steam_dir="Steam"
+ARG server_user="valheim" \
+ 	steam_dir="Steam"
 
 FROM ubuntu:jammy AS steam_installer
-ARG server_user
-ARG steam_dir
+ARG server_user \
+ 	steam_dir
 
 ## Install steamcommand, configure local and add user to run server
 RUN apt-get update \
@@ -19,17 +19,19 @@ RUN mkdir "/${steam_dir}" \
 	&& "/${steam_dir}/steamcmd.sh" +quit
 
 FROM ubuntu:jammy AS configurer
-ARG server_user
-ARG steam_dir
+ARG server_user \
+    steam_dir
 
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
-		lib32gcc-s1 locales ca-certificates moreutils \
-	&& update-ca-certificates \
-	&& locale-gen en_US.UTF-8 \
-	&& apt-get clean \
-	&& rm -rf /var/lib/apt/lists/* \
-	&& useradd -m $server_user
+# RUN apt-get update \
+# 	&& apt-get install -y --no-install-recommends \
+# 		lib32gcc-s1 locales ca-certificates moreutils \
+# 	&& update-ca-certificates \
+# 	&& locale-gen en_US.UTF-8 \
+# 	&& apt-get clean \
+# 	&& rm -rf /var/lib/apt/lists/* \
+# 	&& useradd -m $server_user
+
+WORKDIR "/home/${server_user}"
 
 #System env variables
 ENV	SERVER_USER="${server_user}" \
@@ -41,35 +43,35 @@ ENV	SERVER_USER="${server_user}" \
     LOGGER_PATH="/home/${server_user}/ma-libs/logger.sh" \
 	SERVER_PATH="/home/${server_user}/valheim-server" \
 	SAVE_PATH="/home/${server_user}/valheim-saves" \
-    BACKUP_PATH="/home/${server_user}/valheim-backups"
-
-# Configurable Environment Variables
-ENV SERVER_NAME="Valheim Dedicated Server" \
+    BACKUP_PATH="/home/${server_user}/valheim-backups" \
+	# Configurable Environment Variables
+ 	SERVER_NAME="Valheim Dedicated Server" \
 	PORT=2456 \
-	PASSWORD="password" \
+	PASSWORD="pass" \
 	WORLD_NAME="TheWilds" \
 	IS_PUBLIC=1 \
 	IS_CROSSPLAY=0 \
-	LAST_X_SAVES_RETAINED=4 \
+	X_SAVES_RETAINED=4 \
 	SAVE_INTERVAL=900 \
 	CUSTOM_START_SCRIPT=""
-
-WORKDIR "$USER_HOME"
 
 COPY --from=steam_installer /Steam $STEAM_PATH
 
 # Copy entry and startup scripts
-COPY ./entry.sh /entry.sh
-COPY ./init/ $USER_HOME
-COPY ./limits.conf /etc/security/
-
-ARG symlink="ln -s \"${STEAM_PATH}/linux32/steamcmd\" \"${STEAM_PATH}/linux32/steam\" \
-				&& ln -s \"${STEAM_PATH}/linux32/steamclient.so\" \"${USER_HOME}/.steam/sdk32/steamclient.so\" \
-				&& ln -s \"${STEAM_PATH}/linux64/steamclient.so\" \"${USER_HOME}/.steam/sdk64/steamclient.so\" \
-				&& ln -s \"${STEAM_PATH}/steamcmd.sh\" \"${STEAM_PATH}/steam.sh\""
+COPY ./src/ $USER_HOME
 
 ## Set Access / Ownership to $server_user
-RUN chmod +x /entry.sh \
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+		lib32gcc-s1 locales ca-certificates moreutils \
+	&& update-ca-certificates \
+	&& locale-gen en_US.UTF-8 \
+	&& apt-get clean \
+	&& rm -rf /var/lib/apt/lists/* \
+	&& useradd -m $server_user \
+	&& mv "${USER_HOME}/entry.sh" /entry.sh && chmod +x /entry.sh \
+	&& mv "${USER_HOME}/limits.conf" /etc/security \
+	&& mv "${USER_HOME}/init/"* "${USER_HOME}/"  && rm -r "${USER_HOME}/init" \
 	&& mkdir -p "${USER_HOME}/.steam/sdk32" \
 	&& mkdir -p "${USER_HOME}/.steam/sdk64" \
 	&& chown -R $server_user:valheim "${STEAM_PATH}" \
@@ -80,8 +82,13 @@ RUN chmod +x /entry.sh \
 	&& chmod +x "${USER_HOME}/init.sh" && chown $server_user:valheim "${USER_HOME}/init.sh" \
 	&& chmod +x "${MA_LIBS_PATH}/install-valheim.sh" \
 	&& chmod +x "${USER_HOME}/start-scripts/start.sh"  \
-	&& chmod +x "${USER_HOME}/start-scripts/start-valheim-server.sh"  \
-	&& runuser - ${server_user} -c "${symlink}"
+	&& chmod +x "${USER_HOME}/start-scripts/start-valheim-server.sh" \
+	&& runuser - "${server_user}" -c \
+		"ln -s \"${STEAM_PATH}/linux32/steamcmd\" \"${STEAM_PATH}/linux32/steam\" \
+				&& ln -s \"${STEAM_PATH}/linux32/steamclient.so\" \"${USER_HOME}/.steam/sdk32/steamclient.so\" \
+				&& ln -s \"${STEAM_PATH}/linux64/steamclient.so\" \"${USER_HOME}/.steam/sdk64/steamclient.so\" \
+				&& ln -s \"${STEAM_PATH}/steamcmd.sh\" \"${STEAM_PATH}/steam.sh\""
+
 
 #RUN ln -s "${STEAM_PATH}/linux64/steamclient.so" "/usr/lib/x86_64-linux-gnu/steamclient.so"
 ENTRYPOINT [ "/bin/bash", "/entry.sh" ]

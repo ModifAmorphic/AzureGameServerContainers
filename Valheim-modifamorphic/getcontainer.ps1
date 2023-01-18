@@ -1,5 +1,5 @@
 az container show `
     --resource-group gaming `
-    --name valheim-modifamorphic-sanitysrefuge `
+    --name valheim-sanitysrefuge `
     --query "{FQDN:ipAddress.fqdn,ProvisioningState:provisioningState}" `
     --out table

@@ -16,7 +16,7 @@ export SteamAppId=892970
         -public ${IS_PUBLIC} \
         -logFile "${SERVER_LOG_FILE}" \
         -saveinterval ${SAVE_INTERVAL} \
-        -backups ${LAST_X_SAVES_RETAINED} \
+        -backups ${X_SAVES_RETAINED} \
         $CROSSPLAY_SWITCH 
         #&  #Start in background
 
