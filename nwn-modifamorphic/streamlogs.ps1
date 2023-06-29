@@ -1,0 +1,1 @@
+az container attach --name nwnee-sanitysrefuge --resource-group gaming
