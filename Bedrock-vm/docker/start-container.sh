@@ -18,6 +18,13 @@ smbPath=$(echo $httpEndpoint | cut -c7-${#httpEndpoint})$azureShareName
 fileHost=$(echo $smbPath | tr -d "/")
 
 mntPath="/azmounts/$storageAccount/$azureShareName"
+
+# if grep -qs "$mntPath " /proc/mounts; then 
+#     echo "$mntPath is already mounted. Unmounting and starting fresh."
+#     sudo umount "$mntPath"
+#     sudo rm -rf "$mntPath"
+# fi
+
 mkdir -p "$mntPath"
 
 storageKey=$(az storage account keys list --resource-group ${resourceGroup} --account-name ${storageAccount} --query [0].value -otsv)

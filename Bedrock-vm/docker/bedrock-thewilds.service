@@ -1,8 +1,13 @@
 [Unit]
 Description=Starts Bedrock TheWilds Container
+Wants=network-online.target
+After=network-online.target
 
 [Service]
-ExecStart=/opt/bedrock-thewilds/start-container.sh
+Type=simple
+RemainAfterExit=yes
+ExecStart=/opt/bedrock-thewilds/download-and-start.sh
+ExecStop=/opt/bedrock-thewilds/stop-container.sh
 
 [Install]
 WantedBy=multi-user.target
