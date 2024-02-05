@@ -1,8 +1,8 @@
 {
   "profiles": {
-    "function": {
+    "StartStopGameServers": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7112",
+      "commandLineArgs": "--port 7275",
       "launchBrowser": false
     }
   }
