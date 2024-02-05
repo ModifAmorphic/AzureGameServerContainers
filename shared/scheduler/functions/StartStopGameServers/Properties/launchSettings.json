@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "StartStopGameServers": {
-      "commandName": "Project",
-      "commandLineArgs": "--port 7275",
-      "launchBrowser": false
-    }
-  }
-}
