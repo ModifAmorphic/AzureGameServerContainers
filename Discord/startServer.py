@@ -2,7 +2,7 @@ import requests
 
 ## Captured request from discord - requires Validation be disabled in the function.
 
-url = "https://gameservers-scheduler.azurewebsites.net/api/resourceGroups/gaming/servers/start"
+url = "https://gameservers-scheduler2.azurewebsites.net/api/resourcegroups/gaming/servers/start"
 
 # This is an example CHAT_INPUT or Slash Command, with a type of 1
 json =  {
@@ -14,7 +14,7 @@ json =  {
     "name":"startserver",
     "options": [
         {
-          "name":"game","type":3,"value":"valheim-sanitysrefuge"
+          "name":"game","type":3,"value":"vm-games-host"
         }
       ],
       "type":1
@@ -32,4 +32,5 @@ json =  {
 
 r = requests.post(url, json=json)
 
+print(r.status_code)
 print(r.content)
