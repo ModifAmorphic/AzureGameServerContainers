@@ -1,1 +1,0 @@
-az container attach --name minecraft-thewilds --resource-group gaming

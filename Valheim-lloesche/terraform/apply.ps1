@@ -1,1 +1,0 @@
-terraform apply -var-file valheim-server.tfvars

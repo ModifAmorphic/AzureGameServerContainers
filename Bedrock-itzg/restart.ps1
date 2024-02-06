@@ -1,1 +1,0 @@
-az container restart -g "gaming" -n "minecraft-thewilds"
