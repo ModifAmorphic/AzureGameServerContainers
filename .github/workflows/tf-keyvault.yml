@@ -36,7 +36,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - uses: ModifAmorphic/AzureGameServerContainers/terraformApply@features/create-tf-actions
+      - uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@features/create-tf-actions
         with:
           working-directory: shared/keyvault
         secrets:
