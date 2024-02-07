@@ -23,8 +23,8 @@ jobs:
     uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@features/create-tf-actions
     with:
       working-directory: shared/keyvault
-      environment: vs-subscription
-            
+      github-environment: vs-subscription
+
     # defaults:
     #   run:
     #     working-directory: shared/keyvault
