@@ -32,14 +32,17 @@ resource "azurerm_role_assignment" "contributor" {
   principal_id         = azurerm_user_assigned_identity.githubActions.principal_id
 }
 
-resource "azurerm_role_definition" "role_assigner_role" {
-  name        = "Role Assignment Contributor"
+resource "azurerm_role_definition" "role_contributor" {
+  name        = "Role Contributor"
   scope       = data.azurerm_subscription.current.id
-  description = "Allows reading, writing, and deleting of role assignments."
+  description = "Allows reading, writing, and deleting of role definitions and assignments."
 
   permissions {
     actions     = [
       "Microsoft.Authorization/roleDefinitions/write",
+      "Microsoft.Authorization/roleDefinitions/delete",
+      "Microsoft.Authorization/roleDefinitions/read",
+      "Microsoft.Authorization/roleAssignments/write",
       "Microsoft.Authorization/roleAssignments/delete",
       "Microsoft.Authorization/roleAssignments/read"
       ]
@@ -51,9 +54,9 @@ resource "azurerm_role_definition" "role_assigner_role" {
   ]
 }
 
-resource "azurerm_role_assignment" "rbacAdmin" {
+resource "azurerm_role_assignment" "role_contributor_assignment" {
   scope                = data.azurerm_subscription.current.id
-  role_definition_name = azurerm_role_definition.role_assigner_role.name
+  role_definition_name = azurerm_role_definition.role_contributor.name
   principal_id         = azurerm_user_assigned_identity.githubActions.principal_id
 }
 
