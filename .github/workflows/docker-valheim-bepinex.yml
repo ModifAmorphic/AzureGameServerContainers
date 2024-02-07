@@ -1,0 +1,25 @@
+name: 🐳 Valheim BepInEx Image
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+    paths:
+      - "valheim-docker/bepinex/**"
+      - "!**/README.md"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build-push-valheim-bepinex:
+    name: Build & Push Valheim BepInEx Image
+    uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~dockerhub-build-push.yaml@features/docker-builds
+    with:
+      working-directory: valheim-docker/bepinex
+      image-repository: modifamorphic/valheim-bepinex
+      dockerhub-user: ${{ vars.DOCKER_HUB_USER }}
+    secrets:
+      dockerhub-password: ${{ secrets.DOCKER_HUB_TOKEN }}
+  
