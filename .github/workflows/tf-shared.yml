@@ -21,35 +21,35 @@ permissions:
 jobs:
   terraform-keyvault:
     name: Terraform KeyVault
-    uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@features/create-tf-actions
+    uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@main
     with:
       working-directory: shared/keyvault
       github-environment: vs-subscription
     secrets: inherit
   terraform-vnet:
       name: Terraform Virtual Network
-      uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@features/create-tf-actions
+      uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@main
       with:
         working-directory: shared/vnet
         github-environment: vs-subscription
       secrets: inherit
   terraform-nsg:
     name: Terraform Network Security Group
-    uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@features/create-tf-actions
+    uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@main
     with:
       working-directory: shared/nsg
       github-environment: vs-subscription
     secrets: inherit
   terraform-roles:
     name: Terraform Custom Roles
-    uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@features/create-tf-actions
+    uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@main
     with:
       working-directory: shared/roles
       github-environment: vs-subscription
     secrets: inherit
   terraform-scheduler:
     name: Terraform Scheduler Function
-    uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@features/create-tf-actions
+    uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@main
     needs: [ terraform-roles ]
     with:
       working-directory: shared/scheduler/terraform
