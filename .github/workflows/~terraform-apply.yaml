@@ -20,6 +20,9 @@ jobs:
   terraform-apply:
     runs-on: [ ubuntu-latest ]
     environment: ${{ inputs.github-environment }}
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
     steps:
       - uses: actions/checkout@v3
 
