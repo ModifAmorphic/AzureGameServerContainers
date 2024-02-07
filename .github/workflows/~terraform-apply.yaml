@@ -46,7 +46,7 @@ jobs:
 
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color $TFVARS_ARG
+        run: terraform validate -no-color
 
       - name: Terraform Plan
         id: plan
