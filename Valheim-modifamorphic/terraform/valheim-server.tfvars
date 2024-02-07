@@ -18,6 +18,7 @@ env_vars = {
     #THUNDERSTORE_MODS="[{ \"namespace\": \"ValheimModding\", \"name\": \"Jotunn\", \"version\": \"latest\" }, { \"namespace\": \"Digitalroot\", \"name\": \"Heightmap_Unlimited_Remake\", \"version\": \"latest\" }, { \"namespace\": \"Nextek\", \"name\": \"SpeedyPaths\", \"version\": \"latest\" }, { \"namespace\": \"OdinPlus\", \"name\": \"CraftyCartsRemake\", \"version\": \"latest\" }]"
     THUNDERSTORE_MODS=<<-EOT
                 [
+                    { "namespace": "Smoothbrain", "name": "Network", "version": "latest" },
                     { "namespace": "ValheimModding", "name": "Jotunn", "version": "latest" },
                     { "namespace": "Nextek", "name": "SpeedyPaths", "version": "latest" }, 
                     { "namespace": "OdinPlus", "name": "CraftyCartsRemake", "version": "latest" },
@@ -29,7 +30,8 @@ env_vars = {
                     { "namespace": "bonesbro", "name": "FloorsAreRoofs", "version": "latest" },
                     { "namespace": "NexusPort", "name": "SeafloorWalkingBoots", "version": "latest" },
                     { "namespace": "RandyKnapp", "name": "AdvancedPortals", "version": "latest" },
-                    { "namespace": "Smoothbrain", "name": "DualWield", "version": "latest" }                    
+                    { "namespace": "Smoothbrain", "name": "DualWield", "version": "latest" },
+                    { "namespace": "OdinPlus", "name": "ServerSyncDeathTweaks", "version": "latest" }
                 ]
                 EOT
     PRUNE_MODS=1

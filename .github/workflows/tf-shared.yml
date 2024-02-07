@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: 𝙏 Shared Resources
 
 # Controls when the workflow will run
@@ -16,8 +14,6 @@ on:
 permissions:
   id-token: write
 
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   terraform-keyvault:
     name: Terraform KeyVault
