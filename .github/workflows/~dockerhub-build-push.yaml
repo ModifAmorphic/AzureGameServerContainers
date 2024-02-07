@@ -42,7 +42,7 @@ jobs:
         id: set-env-vars
         run: |
           [[ "${{ inputs.dockerfile-path }}" != "" ]] && dockerFile="${{ inputs.dockerfile-path }}" || dockerFile="Dockerfile"
-          echo "IMAGE_VERSION_TAG=${{ inputs.image-repository }}:$(date +%s)" >> $GITHUB_ENV
+          echo "IMAGE_VERSION_TAG=${{ inputs.image-repository }}:$(date '+%Y-%m-%d')" >> $GITHUB_ENV
           echo "IMAGE_LATEST_TAG=${{ inputs.image-repository }}:latest" >> $GITHUB_ENV
 
       - name: Build Image
