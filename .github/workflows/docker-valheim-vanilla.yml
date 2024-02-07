@@ -21,7 +21,7 @@ jobs:
     with:
       working-directory: valheim-docker/vanilla
       image-repository: modifamorphic/valheim
+      dockerhub-user: ${{ vars.DOCKER_HUB_USER }}
     secrets:
-      dockerhub-user: ${{ secrets.DOCKER_HUB_USER }}
       dockerhub-password: ${{ secrets.DOCKER_HUB_TOKEN }}
   

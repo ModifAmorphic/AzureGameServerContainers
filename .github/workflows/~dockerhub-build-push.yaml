@@ -11,13 +11,15 @@ on:
         description: "Working directory"
         required: true
         type: string
+      dockerhub-user:
+        description: "DockerHub User"
+        required: true
+        type: string
       dockerfile-path:
         description: "Path to the Dockerfile relative to the {{ working-directory }} directory. If not provided, uses {{ working-directory }}/Dockerfile"
         type: string
     secrets:
-      dockerhub-user:
-        description: "DockerHub User"
-        required: true
+      
       dockerhub-password:
         description: "DockerHub Password"
         required: true
@@ -36,7 +38,7 @@ jobs:
       
       - name: DockerHub Login
         id: login
-        run: echo "${{ secrets.dockerhub-password }}" | docker login -u ${{ secrets.dockerhub-user }} --password-stdin
+        run: echo "${{ secrets.dockerhub-password }}" | docker login -u ${{ inputs.dockerhub-user }} --password-stdin
 
       - name: Set Environment Variables
         id: set-env-vars
