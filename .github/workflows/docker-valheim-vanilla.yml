@@ -22,4 +22,3 @@ jobs:
       dockerhub-user: ${{ vars.DOCKER_HUB_USER }}
     secrets:
       dockerhub-password: ${{ secrets.DOCKER_HUB_TOKEN }}
-  

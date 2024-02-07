@@ -15,11 +15,10 @@ on:
 jobs:
   build-push-valheim-bepinex:
     name: Build & Push Valheim BepInEx Image
-    uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~dockerhub-build-push.yaml@features/docker-builds
+    uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~dockerhub-build-push.yaml@main
     with:
       working-directory: valheim-docker/bepinex
       image-repository: modifamorphic/valheim-bepinex
       dockerhub-user: ${{ vars.DOCKER_HUB_USER }}
     secrets:
-      dockerhub-password: ${{ secrets.DOCKER_HUB_TOKEN }}
-  
+      dockerhub-password: ${{ secrets.DOCKER_HUB_TOKEN }}  
