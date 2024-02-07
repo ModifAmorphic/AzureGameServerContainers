@@ -1,4 +1,4 @@
-data "azurerm_subscription" "primary" {
+data "azurerm_subscription" "current" {
 }
 
 resource "azurerm_resource_group" "gaming" {
@@ -27,8 +27,33 @@ resource "azurerm_user_assigned_identity" "githubActions" {
 }
 
 resource "azurerm_role_assignment" "contributor" {
-  scope                = data.azurerm_subscription.primary.id
+  scope                = data.azurerm_subscription.current.id
   role_definition_name = "Contributor"
+  principal_id         = azurerm_user_assigned_identity.githubActions.principal_id
+}
+
+resource "azurerm_role_definition" "role_assigner_role" {
+  name        = "Role Assignment Contributor"
+  scope       = data.azurerm_subscription.current.id
+  description = "Allows reading, writing, and deleting of role assignments."
+
+  permissions {
+    actions     = [
+      "Microsoft.Authorization/roleDefinitions/write",
+      "Microsoft.Authorization/roleAssignments/delete",
+      "Microsoft.Authorization/roleAssignments/read"
+      ]
+    not_actions = []
+  }
+
+  assignable_scopes = [
+    data.azurerm_subscription.current.id
+  ]
+}
+
+resource "azurerm_role_assignment" "rbacAdmin" {
+  scope                = data.azurerm_subscription.current.id
+  role_definition_name = azurerm_role_definition.role_assigner_role.name
   principal_id         = azurerm_user_assigned_identity.githubActions.principal_id
 }
 
@@ -69,12 +94,12 @@ resource "null_resource" "createGithubSecrets" {
 
   #Create AZURE_TENANT_ID Secret
   provisioner "local-exec" {
-    command = "echo \"AZURE_TENANT_ID=${data.azurerm_subscription.primary.tenant_id}\" | gh secret set --env \"${local.environment}\" -f -"
+    command = "echo \"AZURE_TENANT_ID=${data.azurerm_subscription.current.tenant_id}\" | gh secret set --env \"${local.environment}\" -f -"
   }
 
   #Create AZURE_SUBSCRIPTION_ID Secret
   provisioner "local-exec" {
-    command = "echo \"AZURE_SUBSCRIPTION_ID=${data.azurerm_subscription.primary.subscription_id}\" | gh secret set --env \"${local.environment}\" -f -"
+    command = "echo \"AZURE_SUBSCRIPTION_ID=${data.azurerm_subscription.current.subscription_id}\" | gh secret set --env \"${local.environment}\" -f -"
   }
 
   #Create AZURE_OIDC_CLIENT_ID Secret
