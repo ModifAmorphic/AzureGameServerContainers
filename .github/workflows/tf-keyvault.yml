@@ -24,6 +24,14 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment: vs-subscription
+    uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@features/create-tf-actions
+    with:
+      working-directory: shared/keyvault
+    secrets:
+      client-id: ${{ secrets.AZURE_OIDC_CLIENT_ID }}
+      subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+
     # defaults:
     #   run:
     #     working-directory: shared/keyvault
@@ -33,16 +41,9 @@ jobs:
     #   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     #   ARM_USE_OIDC: true
     # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
+    # steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-      - uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@features/create-tf-actions
-        with:
-          working-directory: shared/keyvault
-        secrets:
-          client-id: ${{ secrets.AZURE_OIDC_CLIENT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      #- uses: actions/checkout@v3
           
       # - uses: hashicorp/setup-terraform@v3
       #   with:
