@@ -38,12 +38,16 @@ jobs:
         id: login
         run: echo "${{ secrets.dockerhub-password }}" | docker login -u ${{ secrets.dockerhub-user }} --password-stdin
 
-      - name: Build Image
-        id: build
+      - name: Set Environment Variables
+        id: set-env-vars
         run: |
           [[ "${{ inputs.dockerfile-path }}" != "" ]] && dockerFile="${{ inputs.dockerfile-path }}" || dockerFile="Dockerfile"
           echo "IMAGE_VERSION_TAG=${{ inputs.image-repository }}:$(date +%s)" >> $GITHUB_ENV
           echo "IMAGE_LATEST_TAG=${{ inputs.image-repository }}:latest" >> $GITHUB_ENV
+
+      - name: Build Image
+        id: build
+        run: |
           docker build -t $IMAGE_VERSION_TAG -f "$dockerFile" .
           docker tag $IMAGE_VERSION_TAG $IMAGE_LATEST_TAG
       
