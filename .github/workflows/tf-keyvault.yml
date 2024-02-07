@@ -24,41 +24,48 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment: vs-subscription
-    defaults:
-      run:
-        working-directory: shared/keyvault
-    env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_OIDC_CLIENT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      ARM_USE_OIDC: true
+    # defaults:
+    #   run:
+    #     working-directory: shared/keyvault
+    # env:
+    #   ARM_CLIENT_ID: ${{ secrets.AZURE_OIDC_CLIENT_ID }}
+    #   ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    #   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    #   ARM_USE_OIDC: true
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v3
+      - uses: ModifAmorphic/AzureGameServerContainers/terraformApply@main
         with:
-          terraform_version: "1.5.7"
-      # - name: Azure login
-      #   uses: azure/login@v1
+          working-directory: shared/keyvault
+          client-id: ${{ secrets.AZURE_OIDC_CLIENT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          
+      # - uses: hashicorp/setup-terraform@v3
       #   with:
-      #     client-id: ${{ secrets.AZURE_OIDC_CLIENT_ID }}
-      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      #     terraform_version: "1.5.7"
+      # # - name: Azure login
+      # #   uses: azure/login@v1
+      # #   with:
+      # #     client-id: ${{ secrets.AZURE_OIDC_CLIENT_ID }}
+      # #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      # #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
 
-      - name: Terraform Init
-        id: init
-        run: terraform init
+      # - name: Terraform Init
+      #   id: init
+      #   run: terraform init
 
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate -no-color
+      # - name: Terraform Validate
+      #   id: validate
+      #   run: terraform validate -no-color
 
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan -no-color
-        continue-on-error: true
+      # - name: Terraform Plan
+      #   id: plan
+      #   run: terraform plan -no-color
+      #   continue-on-error: true
       
-      - name: Terraform Apply
-        id: apply
-        run: terraform apply -no-color -auto-approve
+      # - name: Terraform Apply
+      #   id: apply
+      #   run: terraform apply -no-color -auto-approve
