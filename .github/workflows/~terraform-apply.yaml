@@ -1,0 +1,56 @@
+name: 'Terraform Apply'
+
+description: 'Applies the terraform in the {working-directory}'
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        description: 'Directory terraform commands will be executed in'
+        required: true
+      tfvars-file:
+        description: 'Optional path to a terraform .tfvars file, relative to the {working-directory}'
+        required: false
+    secrets:
+      client-id:
+        description: 'Client ID of the identity used for OIDC'
+        required: true
+      subscription-id:
+        description: 'Azure Subscription ID'
+        required: true
+      tenant-id:
+        description: 'Azure Tenant ID'
+        required: true
+jobs:
+  terraform-apply:
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - name: Set Environment Variables
+        shell: bash
+        run: |
+          echo "ARM_CLIENT_ID=${{ secrets.client-id }}" >> $GITHUB_ENV
+          echo "ARM_SUBSCRIPTION_ID=${{ secrets.subscription-id }}" >> $GITHUB_ENV
+          echo "ARM_TENANT_ID=${{ secrets.tenant-id }}" >> $GITHUB_ENV
+          echo "ARM_USE_OIDC=true" >> $GITHUB_ENV
+          varsFile="${{ inputs.tfvars-file }}"
+          echo "TFVARS_ARG=${varsFile:+-var-file=$varsFile}" >> $GITHUB_ENV
+
+      - uses: hashicorp/setup-terraform@v3
+          with:
+            terraform_version: "1.5.7"
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color $TFVARS_ARG
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color $TFVARS_ARG
+        continue-on-error: true
+      
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -no-color -auto-approve $TFVARS_ARG
