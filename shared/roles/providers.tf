@@ -11,7 +11,7 @@ terraform {
     resource_group_name  = "gaming"
     storage_account_name = "persistantgamestorage"
     container_name       = "tfstate"
-    key                  = "ad-roles.tfstate"
+    key                  = "gaming-roles.tfstate"
   }
 }
 

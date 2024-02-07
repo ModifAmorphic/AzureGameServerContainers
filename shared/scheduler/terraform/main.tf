@@ -56,50 +56,15 @@ resource "azurerm_linux_function_app" "scheduler" {
   }
 }
 
-resource "azurerm_role_definition" "container_manager_role" {
-  name        = "Container Instance Manager"
-  scope       = data.azurerm_subscription.primary.id
-  description = "Allow full access to the Azure Container Instance container group resources. Custom role created with Terraform."
-
-  permissions {
-    actions     = [
-      "Microsoft.ContainerInstance/containerGroups/*",
-      "Microsoft.Resources/subscriptions/resourcegroups/read"
-      ]
-    not_actions = []
-  }
-
-  assignable_scopes = [
-    data.azurerm_subscription.primary.id, # /subscriptions/00000000-0000-0000-0000-000000000000
-  ]
-}
-
-resource "azurerm_role_definition" "vm_scheduler_role" {
-  name        = "Virtual Machine Scheduler"
-  scope       = data.azurerm_subscription.primary.id
-  description = "Allows listing, starting and stopping of virtual machines. Custom role created with Terraform."
-
-  permissions {
-    actions     = [
-      "Microsoft.Compute/virtualMachines/*"
-      ]
-    not_actions = []
-  }
-
-  assignable_scopes = [
-    data.azurerm_subscription.primary.id, # /subscriptions/00000000-0000-0000-0000-000000000000
-  ]
-}
-
 # Assign the Container Manager role to the function app's Managed Identity
 resource "azurerm_role_assignment" "container_manager_role_assignment" {
   scope                = data.azurerm_subscription.primary.id
-  role_definition_name = "${azurerm_role_definition.container_manager_role.name}"
+  role_definition_name = "Container Instance Manager"
   principal_id         = azurerm_linux_function_app.scheduler.identity[0].principal_id
 }
 
 resource "azurerm_role_assignment" "vm_scheduler_role_assignment" {
   scope                = data.azurerm_subscription.primary.id
-  role_definition_name = "${azurerm_role_definition.vm_scheduler_role.name}"
+  role_definition_name = "Virtual Machine Scheduler"
   principal_id         = azurerm_linux_function_app.scheduler.identity[0].principal_id
 }
