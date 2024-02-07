@@ -1,4 +1,4 @@
-data "azurerm_subscription" "primary" {
+data "azurerm_subscription" "current" {
 }
 
 data "azurerm_resource_group" "gaming" {
@@ -102,7 +102,7 @@ resource "azurerm_linux_virtual_machine" "games_host_vm" {
   }
 
   # boot_diagnostics {
-  #   storage_account_uri = azurerm_storage_account.my_storage_account.primary_blob_endpoint
+  #   storage_account_uri = azurerm_storage_account.my_storage_account.current_blob_endpoint
   # }
 }
 
@@ -123,13 +123,13 @@ resource "azurerm_dev_test_global_vm_shutdown_schedule" "shutdown_schedule" {
 
 # Grant VM's managed identity access to storage account file shares
 resource "azurerm_role_assignment" "storage_share_role_assignment" {
-  scope                = data.azurerm_subscription.primary.id
+  scope                = data.azurerm_subscription.current.id
   role_definition_name = "Storage File Data SMB Share Contributor"
   principal_id         = azurerm_linux_virtual_machine.games_host_vm.identity[0].principal_id
 }
 
 resource "azurerm_role_assignment" "storage_read_data_role_assignment" {
-  scope                = data.azurerm_subscription.primary.id
+  scope                = data.azurerm_subscription.current.id
   role_definition_name = "Reader and Data Access"
   principal_id         = azurerm_linux_virtual_machine.games_host_vm.identity[0].principal_id
 }
