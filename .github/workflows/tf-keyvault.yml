@@ -24,7 +24,7 @@ jobs:
     with:
       working-directory: shared/keyvault
       github-environment: vs-subscription
-
+    secrets: inherit
     # defaults:
     #   run:
     #     working-directory: shared/keyvault
