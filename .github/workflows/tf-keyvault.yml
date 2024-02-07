@@ -32,13 +32,25 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.5.7"
       - name: Azure login
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_OIDC_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Terraform Init
+        id: init
+        run: terraform init
 
-      - name: Get Resource Group
-        run: az group show --name gaming
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+        continue-on-error: true
         
