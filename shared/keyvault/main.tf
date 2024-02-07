@@ -4,6 +4,11 @@ data "azurerm_resource_group" "gaming" {
 
 data "azurerm_client_config" "current" {}
 
+data "azurerm_user_assigned_identity" "githubActions" {
+  name                = "github-actions-identity"
+  resource_group_name = data.azurerm_resource_group.gaming.name
+}
+
 resource "azurerm_key_vault" "gaming_keyvault" {
   name                        = "gaming-keyvault"
   location                    = data.azurerm_resource_group.gaming.location
@@ -17,7 +22,7 @@ resource "azurerm_key_vault" "gaming_keyvault" {
 
   access_policy {
     tenant_id = data.azurerm_client_config.current.tenant_id
-    object_id = data.azurerm_client_config.current.object_id
+    object_id = data.azurerm_user_assigned_identity.githubActions.principal_id
 
     key_permissions = [
       "Get",
