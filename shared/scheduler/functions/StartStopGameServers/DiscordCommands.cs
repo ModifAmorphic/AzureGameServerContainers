@@ -54,23 +54,23 @@ namespace GameServers.Scheduler
                     return HttpResponseHelper.GetPingAck();
                 }
 
-                if (interaction.InteractionType == InteractionTypes.APPLICATION_COMMAND)
+                if (interaction.InteractionType == InteractionTypes.APPLICATION_COMMAND && interaction.Data?.Options?.Length > 0)
                 {
-                    if (interaction.Data?.Options?.Length > 0)
+                    var serverName = interaction.Data.Options.First().Value;
+                    if (_aciGameServers.Contains(serverName))
                     {
-                        var serverName = interaction.Data.Options.First().Value;
-                        if (DiscordCommands._aciGameServers.Contains(serverName))
-                        {
-                            _ = AciHelper.StartServerAsync(resourceGroup, serverName, log);
-                            return HttpResponseHelper.GetAciStartedResponse(serverName);
-                        }
-                        if (DiscordCommands._vmGameServers.Contains(serverName))
-                        {
-                            _ = VmManager.StartServerAsync(resourceGroup, serverName, log);
-                            return HttpResponseHelper.GetVmStartedResponse(serverName);
-                        }
-                        log.LogError("Unknown action requested. serverName={serverName}, resourceGroup={resourceGroup}", serverName, resourceGroup);
+                        _ = AciHelper.StartServerAsync(resourceGroup, serverName, log);
+                        return HttpResponseHelper.GetAciStartedResponse(serverName);
                     }
+                    
+                    if (_vmGameServers.Contains(serverName))
+                    {
+                        _ = VmManager.StartServerAsync(resourceGroup, serverName, log);
+                        return HttpResponseHelper.GetVmStartedResponse(serverName);
+                    }
+                    
+                    log.LogError("Unknown action requested. serverName={serverName}, resourceGroup={resourceGroup}", serverName, resourceGroup);
+                    
                 }
 
                 return HttpResponseHelper.GetBadCmdResponse();
