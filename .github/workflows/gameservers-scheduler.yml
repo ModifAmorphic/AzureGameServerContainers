@@ -23,7 +23,6 @@ permissions:
 # 2. Change these variables for your configuration:
 env:
   AZURE_FUNCTIONAPP_NAME: 'gameservers-scheduler'   # set this to your function app name on Azure
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'               # set this to the path to your function app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'                           # set this to the dotnet version to use (e.g. '2.1.x', '3.1.x', '5.0.x')
 
 jobs:
@@ -49,18 +48,16 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: 'Resolve Project Dependencies Using Dotnet'
+    - name: 'Build Function'
       shell: bash
       run: |
-        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         dotnet build --configuration Release --output ./output
-        popd
 
-    - name: 'Run Azure Functions Action'
+    - name: 'Deploy Function'
       uses: Azure/functions-action@v1
       id: fa
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+        package: './output'
 
 # For more samples to get started with GitHub Action workflows to deploy to Azure, refer to https://github.com/Azure/actions-workflow-samples
