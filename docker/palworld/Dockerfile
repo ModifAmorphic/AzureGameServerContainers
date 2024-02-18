@@ -1,4 +1,4 @@
-ARG server_user="${GAME_NAME}" \
+ARG server_user="PalWorld" \
  	steam_dir="Steam" \
 	game_name="PalWorld"
 
