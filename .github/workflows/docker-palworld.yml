@@ -1,12 +1,12 @@
-name: '🐳 Valheim Vanilla Image'
+name: '🐳 PalWorld Image'
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: [ "main", "features/palworld" ]
     paths:
-      - "docker/valheim/vanilla/**"
+      - "docker/palworld/**"
       - "!**/README.md"
 
   # Allows you to run this workflow manually from the Actions tab
@@ -17,8 +17,8 @@ jobs:
     name: Build & Push Valheim Image
     uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~dockerhub-build-push.yaml@main
     with:
-      working-directory: docker/valheim/vanilla
-      image-repository: modifamorphic/valheim
+      working-directory: docker/palworld
+      image-repository: modifamorphic/palworld
       dockerhub-user: ${{ vars.DOCKER_HUB_USER }}
     secrets:
       dockerhub-password: ${{ secrets.DOCKER_HUB_TOKEN }}
