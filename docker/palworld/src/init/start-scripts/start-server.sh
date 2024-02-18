@@ -16,6 +16,6 @@ export SteamAppId=$STEAM_APP_ID
 #Export the Process ID so process can be waited on
 export SERVER_PID=$!
 
-llog "Valheim Server Started with PID ${SERVER_PID}"
+llog "${GAME_NAME} Server Started with PID ${SERVER_PID}"
 
 export LD_LIBRARY_PATH=$templdpath

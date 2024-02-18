@@ -1,5 +1,6 @@
 ARG server_user="${GAME_NAME}" \
- 	steam_dir="Steam"
+ 	steam_dir="Steam" \
+	game_name="PalWorld"
 
 FROM ubuntu:jammy AS steam_installer
 ARG server_user \
@@ -34,27 +35,19 @@ ARG server_user \
 WORKDIR "/home/${server_user}"
 
 #System env variables
-ENV	GAME_NAME="PalWorld" \
+ENV	GAME_NAME="${game_name}" \
 	STEAM_APP_ID="2394010" \
 	SERVER_USER="${server_user}" \
 	USER_HOME="/home/${server_user}" \
  	STEAM_PATH="/home/${server_user}/${steam_dir}" \
 	MA_LIBS_PATH="/home/${server_user}/ma-libs" \
-	LOG_PATH="/home/${server_user}/valheim-logs" \
-	LOGFILE_PATH="/home/${server_user}/valheim-logs/valheim-server.log" \
+	LOG_PATH="/home/${server_user}/${game_name}-logs" \
+	LOGFILE_PATH="/home/${server_user}/${game_name}-logs/${game_name}-server.log" \
     LOGGER_PATH="/home/${server_user}/ma-libs/logger.sh" \
-	SERVER_PATH="/home/${server_user}/valheim-server" \
-	SAVE_PATH="/home/${server_user}/valheim-saves" \
-    BACKUP_PATH="/home/${server_user}/valheim-backups" \
+	SERVER_PATH="/home/${server_user}/${game_name}-server" \
 	# Configurable Environment Variables
- 	SERVER_NAME="Valheim Dedicated Server" \
-	PORT=2456 \
-	PASSWORD="pass" \
-	WORLD_NAME="TheWilds" \
-	IS_PUBLIC=1 \
-	IS_CROSSPLAY=0 \
-	X_SAVES_RETAINED=4 \
-	SAVE_INTERVAL=900 \
+ 	SERVER_NAME="${game_name} Dedicated Server" \
+	PORT=8211 \
 	CUSTOM_START_SCRIPT=""
 
 COPY --from=steam_installer /Steam $STEAM_PATH
@@ -76,15 +69,15 @@ RUN apt-get update \
 	&& mv "${USER_HOME}/init/"* "${USER_HOME}/"  && rm -r "${USER_HOME}/init" \
 	&& mkdir -p "${USER_HOME}/.steam/sdk32" \
 	&& mkdir -p "${USER_HOME}/.steam/sdk64" \
-	&& chown -R $server_user:valheim "${STEAM_PATH}" \
-	&& chown -R $server_user:valheim "${USER_HOME}/start-scripts" \
-	&& chown -R $server_user:valheim "${USER_HOME}/.steam" \
-	&& chown -R $server_user:valheim "${MA_LIBS_PATH}" \
+	&& chown -R $server_user:"$GAME_NAME" "${STEAM_PATH}" \
+	&& chown -R $server_user:"$GAME_NAME" "${USER_HOME}/start-scripts" \
+	&& chown -R $server_user:"$GAME_NAME" "${USER_HOME}/.steam" \
+	&& chown -R $server_user:"$GAME_NAME" "${MA_LIBS_PATH}" \
 	&& chmod +x "${LOGGER_PATH}" \
-	&& chmod +x "${USER_HOME}/init.sh" && chown $server_user:valheim "${USER_HOME}/init.sh" \
-	&& chmod +x "${MA_LIBS_PATH}/install-valheim.sh" \
+	&& chmod +x "${USER_HOME}/init.sh" && chown $server_user:"$GAME_NAME" "${USER_HOME}/init.sh" \
+	&& chmod +x "${MA_LIBS_PATH}/install-server.sh" \
 	&& chmod +x "${USER_HOME}/start-scripts/start.sh"  \
-	&& chmod +x "${USER_HOME}/start-scripts/start-valheim-server.sh" \
+	&& chmod +x "${USER_HOME}/start-scripts/start-server.sh" \
 	&& runuser - "${server_user}" -c \
 		"ln -s \"${STEAM_PATH}/linux32/steamcmd\" \"${STEAM_PATH}/linux32/steam\" \
 				&& ln -s \"${STEAM_PATH}/linux32/steamclient.so\" \"${USER_HOME}/.steam/sdk32/steamclient.so\" \
@@ -94,4 +87,4 @@ RUN apt-get update \
 
 #RUN ln -s "${STEAM_PATH}/linux64/steamclient.so" "/usr/lib/x86_64-linux-gnu/steamclient.so"
 ENTRYPOINT [ "/bin/bash", "/entry.sh" ]
-CMD [ "/home/valheim/init.sh" ] 
+CMD [ "/home/PalWorld/init.sh" ] 

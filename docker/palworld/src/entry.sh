@@ -10,20 +10,14 @@ llog()
 }
 
 llog "Running elevated commands"
-llog "Assigning user $SERVER_USER ownership of valheim directories"
+llog "Assigning user $SERVER_USER ownership of ${GAME_NAME} directories"
 
 #Ensures the $SERVER_USER owns the game paths if they already exist, otherwise creates them first and then assigns ownership.
 [ ! -d "$LOG_PATH" ] && mkdir -p "$LOG_PATH"
-chown -R $SERVER_USER:valheim "$LOG_PATH"
+chown -R $SERVER_USER:"${GAME_NAME}" "$LOG_PATH"
 
 [ ! -d "$SERVER_PATH" ] && mkdir -p "$SERVER_PATH"
-chown -R $SERVER_USER:valheim "$SERVER_PATH"
-
-[ ! -d "$SAVE_PATH" ] && mkdir -p "$SAVE_PATH"
-chown -R $SERVER_USER:valheim "$SAVE_PATH"
-
-[ ! -d "$BACKUP_PATH" ] && mkdir -p "$BACKUP_PATH"
-chown -R $SERVER_USER:valheim "$BACKUP_PATH"
+chown -R $SERVER_USER:"${GAME_NAME}" "$SERVER_PATH"
 
 for file in "${MA_LIBS_PATH}"/*.sh; do
     if [[ ! -x "$file" ]]; then
@@ -33,7 +27,7 @@ for file in "${MA_LIBS_PATH}"/*.sh; do
     owner="$(stat --format '%U' "$file")"
     if [[ "$owner" != "$SERVER_USER" ]]; then
         llog "Assigning user \"${SERVER_USER}\" ownership of file \"${file}\""
-        chown $SERVER_USER:valheim "$file"
+        chown $SERVER_USER:"${GAME_NAME}" "$file"
     fi
 done
 
