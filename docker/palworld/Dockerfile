@@ -1,6 +1,7 @@
-ARG server_user="PalWorld" \
+ARG server_user="palworld" \
  	steam_dir="Steam" \
-	game_name="PalWorld"
+	game_name="PalWorld" \
+	l_game_name="palworld"
 
 FROM ubuntu:jammy AS steam_installer
 ARG server_user \
@@ -21,7 +22,9 @@ RUN mkdir "/${steam_dir}" \
 
 FROM ubuntu:jammy AS configurer
 ARG server_user \
-    steam_dir
+    steam_dir \
+	game_name \
+	l_game_name
 
 # RUN apt-get update \
 # 	&& apt-get install -y --no-install-recommends \
@@ -36,15 +39,16 @@ WORKDIR "/home/${server_user}"
 
 #System env variables
 ENV	GAME_NAME="${game_name}" \
+	L_GAME_NAME="${l_game_name}" \
 	STEAM_APP_ID="2394010" \
 	SERVER_USER="${server_user}" \
 	USER_HOME="/home/${server_user}" \
  	STEAM_PATH="/home/${server_user}/${steam_dir}" \
 	MA_LIBS_PATH="/home/${server_user}/ma-libs" \
-	LOG_PATH="/home/${server_user}/${game_name}-logs" \
-	LOGFILE_PATH="/home/${server_user}/${game_name}-logs/${game_name}-server.log" \
+	LOG_PATH="/home/${server_user}/${l_game_name}-logs" \
+	LOGFILE_PATH="/home/${server_user}/${l_game_name}-logs/${l_game_name}-server.log" \
     LOGGER_PATH="/home/${server_user}/ma-libs/logger.sh" \
-	SERVER_PATH="/home/${server_user}/${game_name}-server" \
+	SERVER_PATH="/home/${server_user}/${l_game_name}-server" \
 	# Configurable Environment Variables
  	SERVER_NAME="${game_name} Dedicated Server" \
 	PORT=8211 \
@@ -69,12 +73,12 @@ RUN apt-get update \
 	&& mv "${USER_HOME}/init/"* "${USER_HOME}/"  && rm -r "${USER_HOME}/init" \
 	&& mkdir -p "${USER_HOME}/.steam/sdk32" \
 	&& mkdir -p "${USER_HOME}/.steam/sdk64" \
-	&& chown -R $server_user:"$GAME_NAME" "${STEAM_PATH}" \
-	&& chown -R $server_user:"$GAME_NAME" "${USER_HOME}/start-scripts" \
-	&& chown -R $server_user:"$GAME_NAME" "${USER_HOME}/.steam" \
-	&& chown -R $server_user:"$GAME_NAME" "${MA_LIBS_PATH}" \
+	&& chown -R $server_user:"$L_GAME_NAME" "${STEAM_PATH}" \
+	&& chown -R $server_user:"$L_GAME_NAME" "${USER_HOME}/start-scripts" \
+	&& chown -R $server_user:"$L_GAME_NAME" "${USER_HOME}/.steam" \
+	&& chown -R $server_user:"$L_GAME_NAME" "${MA_LIBS_PATH}" \
 	&& chmod +x "${LOGGER_PATH}" \
-	&& chmod +x "${USER_HOME}/init.sh" && chown $server_user:"$GAME_NAME" "${USER_HOME}/init.sh" \
+	&& chmod +x "${USER_HOME}/init.sh" && chown $server_user:"$L_GAME_NAME" "${USER_HOME}/init.sh" \
 	&& chmod +x "${MA_LIBS_PATH}/install-server.sh" \
 	&& chmod +x "${USER_HOME}/start-scripts/start.sh"  \
 	&& chmod +x "${USER_HOME}/start-scripts/start-server.sh" \
@@ -87,4 +91,4 @@ RUN apt-get update \
 
 #RUN ln -s "${STEAM_PATH}/linux64/steamclient.so" "/usr/lib/x86_64-linux-gnu/steamclient.so"
 ENTRYPOINT [ "/bin/bash", "/entry.sh" ]
-CMD [ "/home/PalWorld/init.sh" ] 
+CMD [ "/home/palworld/init.sh" ] 
