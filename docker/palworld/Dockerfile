@@ -63,6 +63,7 @@ COPY ./src/ $USER_HOME
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		lib32gcc-s1 locales ca-certificates moreutils \
+		xdg-user-dirs xdg-utils \
 	&& update-ca-certificates \
 	&& locale-gen en_US.UTF-8 \
 	&& apt-get clean \

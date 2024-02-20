@@ -52,6 +52,7 @@ resource "azurerm_container_group" "this" {
   ip_address_type     = "Public"
   dns_name_label      = "${var.dns-name}"
   os_type             = "Linux"
+  dns_name_label_reuse_policy = "SubscriptionReuse"
 
   container {
     name   = var.container_name

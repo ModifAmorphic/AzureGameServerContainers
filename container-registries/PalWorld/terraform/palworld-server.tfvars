@@ -8,5 +8,4 @@ azure_server_share = "palworld-server"
 
 env_vars = {
     SERVER_NAME="PalWorld Dedicated Server"
-    PORT=8211
 }

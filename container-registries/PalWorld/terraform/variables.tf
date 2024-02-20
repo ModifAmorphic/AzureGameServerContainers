@@ -40,8 +40,10 @@ variable "env_vars" {
 variable "discord_starting_json" {
     description = "Escaped json message to post to discord when the server is starting"
     type        = string
+    default     = "Server Starting"
 }
 variable "discord_ready_json" {
     description = "Escaped json message to post to discord when the server is ready for connections"
     type        = string
+    default     = "Server Ready"
 }
