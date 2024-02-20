@@ -4,7 +4,7 @@ name: '🎮 Register Discord Commands'
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main", "features/palworld" ]
+    branches: [ "main" ]
     # paths:
     #   - "Discord/**"
     #   - "!**/README.md"
