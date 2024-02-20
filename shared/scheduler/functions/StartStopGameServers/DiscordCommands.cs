@@ -18,7 +18,8 @@ namespace GameServers.Scheduler
     {
         private static HashSet<string> _aciGameServers = new HashSet<string>()
         {
-            "valheim-sanitysrefuge"
+            "valheim-sanitysrefuge",
+            "palworld"
         };
         private static HashSet<string> _vmGameServers = new HashSet<string>()
         {
