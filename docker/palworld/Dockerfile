@@ -1,6 +1,6 @@
 ARG server_user="palworld" \
  	steam_dir="Steam" \
-	game_name="PalWorld" \
+	game_name="Palworld" \
 	l_game_name="palworld"
 
 FROM ubuntu:jammy AS steam_installer

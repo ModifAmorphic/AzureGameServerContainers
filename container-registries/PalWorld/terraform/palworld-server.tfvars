@@ -7,5 +7,5 @@ memory = "8"
 azure_server_share = "palworld-server"
 
 env_vars = {
-    SERVER_NAME="PalWorld Dedicated Server"
+    SERVER_NAME="Palworld Dedicated Server"
 }
