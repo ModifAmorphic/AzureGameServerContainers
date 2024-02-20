@@ -5,16 +5,16 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main", "features/palworld" ]
-    paths:
-      - "Discord/**"
-      - "!**/README.md"
+    # paths:
+    #   - "Discord/**"
+    #   - "!**/README.md"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 permissions:
   id-token: write
-  
+
 jobs:
   register-commands:
     runs-on: ubuntu-latest
