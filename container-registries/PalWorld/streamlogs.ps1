@@ -1,0 +1,1 @@
+az container attach --name palworld --resource-group gaming

@@ -23,6 +23,10 @@ json = {
                 {
                     "name": "Minecraft",
                     "value": "vm-games-host"
+                },
+                {
+                    "name": "Palworld",
+                    "value": "palworld"
                 }
                 # ,{
                 #     "name": "Astroneer",

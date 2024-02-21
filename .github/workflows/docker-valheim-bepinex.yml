@@ -6,7 +6,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - "valheim-docker/bepinex/**"
+      - "docker/valheim/bepinex/**"
       - "!**/README.md"
 
   # Allows you to run this workflow manually from the Actions tab
@@ -17,7 +17,7 @@ jobs:
     name: Build & Push Valheim BepInEx Image
     uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~dockerhub-build-push.yaml@main
     with:
-      working-directory: valheim-docker/bepinex
+      working-directory: docker/valheim/bepinex
       image-repository: modifamorphic/valheim-bepinex
       dockerhub-user: ${{ vars.DOCKER_HUB_USER }}
     secrets:

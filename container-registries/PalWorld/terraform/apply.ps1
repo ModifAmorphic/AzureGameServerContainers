@@ -1,0 +1,1 @@
+terraform apply -var-file palworld-server.tfvars
