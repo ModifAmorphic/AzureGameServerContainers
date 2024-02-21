@@ -1,10 +1,10 @@
 data "azurerm_resource_group" "gaming" {
-  name     = "gaming"
+  name = "gaming"
 }
 
- data "azurerm_storage_account" "gamestorage" {
-   name                     = "persistantgamestorage"
-   resource_group_name      = data.azurerm_resource_group.gaming.name
+data "azurerm_storage_account" "gamestorage" {
+  name                = "persistantgamestorage"
+  resource_group_name = data.azurerm_resource_group.gaming.name
 }
 
 data "azurerm_network_security_group" "gaming-nsg" {
@@ -13,8 +13,8 @@ data "azurerm_network_security_group" "gaming-nsg" {
 }
 
 data "azurerm_key_vault" "gaming_keyvault" {
-  name                        = "gaming-keyvault"
-  resource_group_name         = data.azurerm_resource_group.gaming.name
+  name                = "gaming-keyvault"
+  resource_group_name = data.azurerm_resource_group.gaming.name
 }
 
 # data "azurerm_key_vault_secret" "server_pass" {
@@ -46,13 +46,14 @@ resource "azurerm_storage_share" "game-server" {
 }
 
 resource "azurerm_container_group" "this" {
-  name                = "${var.container_name}"
-  location            = data.azurerm_resource_group.gaming.location
-  resource_group_name = data.azurerm_resource_group.gaming.name
-  ip_address_type     = "Public"
-  dns_name_label      = "${var.dns-name}"
-  os_type             = "Linux"
+  name                        = var.container_name
+  location                    = var.location #data.azurerm_resource_group.gaming.location
+  resource_group_name         = data.azurerm_resource_group.gaming.name
+  ip_address_type             = "Public"
+  dns_name_label              = var.dns-name
+  os_type                     = "Linux"
   dns_name_label_reuse_policy = "SubscriptionReuse"
+  priority                    = var.priority
 
   container {
     name   = var.container_name
@@ -80,6 +81,6 @@ resource "azurerm_container_group" "this" {
 
       storage_account_name = data.azurerm_storage_account.gamestorage.name
       storage_account_key  = data.azurerm_storage_account.gamestorage.primary_access_key
-    }    
+    }
   }
 }
