@@ -13,8 +13,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-push-valheim:
-    name: Build & Push Valheim Image
+  build-push:
+    name: Build & Push Palworld Image
     uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~dockerhub-build-push.yaml@main
     with:
       working-directory: docker/palworld
