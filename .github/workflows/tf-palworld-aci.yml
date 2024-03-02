@@ -4,9 +4,9 @@ name: '𝙏 Palworld Container Instance'
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: [ "main", "features/palworld" ]
     paths:
-      - "container-registries/PalWorld/terraform/**"
+      - "container-registries/Palworld/terraform/**"
       - "!**/README.md"
 
   # Allows you to run this workflow manually from the Actions tab
@@ -19,7 +19,7 @@ jobs:
     name: Terraform Palworld Container Instance
     uses: ModifAmorphic/AzureGameServerContainers/.github/workflows/~terraform-apply.yaml@main
     with:
-      working-directory: container-registries/PalWorld/terraform
+      working-directory: container-registries/Palworld/terraform
       github-environment: vs-subscription
       tfvars-file: palworld-server.tfvars
     secrets: inherit

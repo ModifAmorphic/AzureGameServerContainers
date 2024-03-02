@@ -53,3 +53,16 @@ addLogPrefix()
     
     ___msgRef="[${_source}] `date --utc +%T` - ${___msgRef}"
 }
+
+llog()
+{
+    log "$1" "$LOG_SOURCE"
+}
+lwarn()
+{
+    logWarn "$1" "$LOG_SOURCE"
+}
+lerror()
+{
+    logError "$1" "$LOG_SOURCE"
+}

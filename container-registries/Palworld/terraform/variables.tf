@@ -42,19 +42,18 @@ variable "azure_server_share" {
   default     = "game-server"
 }
 
+variable "ports" {
+  description = "Ports to open and their protocol"
+  type        = list(object(
+    {
+      port = number,
+      protocol = string
+    }
+  ))
+}
+
 variable "env_vars" {
   description = "Env Variables for game server startup"
   type        = map(any)
   default     = {}
-}
-
-variable "discord_starting_json" {
-  description = "Escaped json message to post to discord when the server is starting"
-  type        = string
-  default     = "Server Starting"
-}
-variable "discord_ready_json" {
-  description = "Escaped json message to post to discord when the server is ready for connections"
-  type        = string
-  default     = "Server Ready"
 }

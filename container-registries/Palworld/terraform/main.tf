@@ -17,22 +17,21 @@ data "azurerm_key_vault" "gaming_keyvault" {
   resource_group_name = data.azurerm_resource_group.gaming.name
 }
 
-# data "azurerm_key_vault_secret" "server_pass" {
-#   name      = "ValheimSanitysRefugePassword"
-#   key_vault_id = data.azurerm_key_vault.gaming_keyvault.id
-# }
+data "azurerm_key_vault_secret" "server_pass" {
+  name      = "PalworldPassword"
+  key_vault_id = data.azurerm_key_vault.gaming_keyvault.id
+}
 
-# data "azurerm_key_vault_secret" "discord_valheim_webhook" {
-#   name      = "ValheimSanitysRefugeDiscordWebhook"
-#   key_vault_id = data.azurerm_key_vault.gaming_keyvault.id
-# }
+data "azurerm_key_vault_secret" "discord_webhook" {
+  name      = "PalworldDiscordServerWebhook"
+  key_vault_id = data.azurerm_key_vault.gaming_keyvault.id
+}
 
 locals {
-  # env_secrets = {
-  #   PASSWORD = "${data.azurerm_key_vault_secret.server_pass.value}"
-  #   PRE_BOOTSTRAP_HOOK="curl -sfSL -X POST -H \"Content-Type: application/json\" -d \"${var.discord_starting_json}\" ${data.azurerm_key_vault_secret.discord_valheim_webhook.value}"
-  #   POST_SERVER_LISTENING_HOOK="curl -sfSL -X POST -H \"Content-Type: application/json\" -d \"${var.discord_ready_json}\" ${data.azurerm_key_vault_secret.discord_valheim_webhook.value}"
-  # }
+  env_secrets = {
+    SERVER_PASSWORD = data.azurerm_key_vault_secret.server_pass.value
+    DISCORD_WEBHOOK = data.azurerm_key_vault_secret.discord_webhook.value
+  }
   #server_env_vars = merge(local.env_secrets, var.env_vars)
   server_env_vars = var.env_vars
 }
@@ -61,14 +60,12 @@ resource "azurerm_container_group" "this" {
     cpu    = var.cpu
     memory = var.memory
 
-    ports {
-      port     = 8211
-      protocol = "UDP"
-    }
-
-    ports {
-      port     = 27015
-      protocol = "UDP"
+    dynamic "ports" {
+      for_each = toset(var.ports)
+      content {
+        port = ports.value.port
+        protocol = ports.value.protocol
+      }
     }
 
     environment_variables = local.server_env_vars
