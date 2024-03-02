@@ -10,6 +10,8 @@ export LOG_SOURCE="Init"
 . "${MA_LIBS_PATH}/server-commands.sh"
 
 main() {
+    [[ -z "$DISCORD_STARTING_MESSAGE" ]] || sendDiscordMessage "$DISCORD_STARTING_MESSAGE"
+    export SERVER_PUBLIC_IP=$(curl icanhazip.com)
     # Fix missing links to steam files if needed
     # linkFileIfMissing "${STEAM_PATH}/linux32/steam" "${STEAM_PATH}/linux32/steamcmd"
     # linkFileIfMissing "${STEAM_PATH}/linux64/steam" "${STEAM_PATH}/linux64/steamcmd"

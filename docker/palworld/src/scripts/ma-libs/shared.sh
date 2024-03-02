@@ -30,3 +30,16 @@ linkFileIfMissingChown() {
         fi
     fi
 }
+
+sendDiscordMessage() {
+    eval "message=\"$1\""
+
+    if [[ -z "$DISCORD_WEBHOOK" ]]; then
+        llog "DISCORD_WEBHOOK environment variable not set. Not sending discord message."
+        return;
+    fi
+
+    local body="{\"content\":\"${message}\"}"
+    local jsonHeader="Content-Type: application/json"
+    curl --header "$jsonHeader" --request POST --data "$body" $DISCORD_WEBHOOK
+}

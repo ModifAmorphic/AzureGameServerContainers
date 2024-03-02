@@ -53,20 +53,6 @@ stopServer() {
     set -e
 }
 
-sendDiscordMessage() {
-    message="$1"
-
-    if [[ -z "$DISCORD_WEBHOOK" ]]; then
-        llog "DISCORD_WEBHOOK environment variable not set. Not sending discord message."
-        return;
-    fi
-
-    local body="{\"content\":\"${message}\"}"
-    local jsonHeader="Content-Type: application/json"
-    curl --header "$jsonHeader" --request POST --data "$body" $DISCORD_WEBHOOK
-    
-}
-
 startServer() {
     export LOG_SOURCE="Startup"
     # Check if this is the first time the server has been ran
@@ -79,10 +65,8 @@ startServer() {
             # attempt to delete firstrun file if it still exists. Ignore errors.
             [[ -f "${SERVER_PATH}/firstrun" ]] && set +e && rm -f "${SERVER_PATH}/firstrun" && set -e
         fi
-        (( $SERVER_FIRST_RUN == 0 )) && configureServer
+        if (( $SERVER_FIRST_RUN == 0 )); then configureServer; fi
         export SERVER_FIRST_RUN=0
-        [[ -z "$DISCORD_STARTING_MESSAGE" ]] || sendDiscordMessage "$DISCORD_STARTING_MESSAGE"
-        
     fi
 
     if [[ -z "$CUSTOM_START_SCRIPT" ]]; then
@@ -136,41 +120,7 @@ doAfterPortListening() {
 # 2. Shuts down game server and modifies config files.
 # 3. Starts game server back up by calling the startServer function.
 configureServerFirstStart() {
-    
     firstStartCalls=$(($firstStartCalls + 1))
-    #Wait for UDP port to show as listening
     llog "Waiting for port $PORT."
-    # local listening=$(ss --udp --listening --no-header src :$PORT)
-    # while [[ ! $listening ]]; do   
-    #     sleep $sleepfor
-    #     tick=$(($tick + $sleepfor))
-    #     # llog "tick=$tick; (( tick < timeout ))=$(( $tick < $timeout ))"
-    #     listening=$(ss --udp --listening --no-header src :$PORT)
-    # done
-    # if (( $tick > $timeout )); then
-    #     lwarn "Timed out waiting for port $PORT to listen."
-    # else
-    #     llog "Port $PORT is listening."
-    # fi
-
-    # set +e
-    #     llog "Sending kill to server with process Id $PALSERVER_PID"
-    #     kill -INT $PALSERVER_PID
-    #     # Wait for process to be killed
-    #     local isAlive=$(kill -0 $PALSERVER_PID 2> /dev/null && printf -- 1 || printf -- 0)
-    #     tick=0
-    #     while (( $isAlive > 0 )) && (( $tick < 30 )); do
-    #         sleep 1
-    #         isAlive=$(kill -0 $PALSERVER_PID 2> /dev/null && printf -- 1 || printf -- 0)
-    #         tick=$(($tick + 1))
-    #     done
-    #     if (( $isAlive > 0 )); then
-    #         lwarn "Timed out waiting for $PAL_ServerName to shut down gracefully. Forcing shutdown."
-    #         kill -9 $PALSERVER_PID
-    #         timeout 30 bash -c "while kill -0 $PALSERVER_PID; do sleep 1; done"
-    #     fi
-    # set -e
     doAfterPortListening $PORT 'stopServer; configureServer && startServer'
-    # configureServer
-    # startServer
 }

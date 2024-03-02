@@ -29,7 +29,7 @@ data "azurerm_key_vault_secret" "discord_webhook" {
 
 locals {
   env_secrets = {
-    SERVER_PASSWORD = data.azurerm_key_vault_secret.server_pass.value
+    PAL_ServerPassword = data.azurerm_key_vault_secret.server_pass.value
     DISCORD_WEBHOOK = data.azurerm_key_vault_secret.discord_webhook.value
   }
   server_env_vars = merge(local.env_secrets, var.env_vars)

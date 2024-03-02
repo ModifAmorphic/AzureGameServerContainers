@@ -7,6 +7,7 @@ services:
     environment:
       PORT: 8211
       PAL_ServerName: "Palworld Dedicated Server"
+      PAL_ServerPassword: "password1"
       PAL_BuildObjectDeteriorationDamageRate: "0.000000"
       PAL_DeathPenalty: "ItemAndEquipment"
       PAL_PalEggDefaultHatchingTime: "2"
@@ -26,7 +27,7 @@ services:
       ENGINE_r_ThreadedPhysics: "/Script/Engine.RendererSettings/r.ThreadedPhysics=True"
       DISCORD_WEBHOOK: ""
       DISCORD_STARTING_MESSAGE: "$${PAL_ServerName} is starting..."
-      DISCORD_READY_MESSAGE: "$${PAL_ServerName} is ready for players!"
+      DISCORD_READY_MESSAGE: "$${PAL_ServerName} is ready for players!\\nServer: $${SERVER_PUBLIC_IP}:$${PORT}\\nPassword: $${PAL_ServerPassword}"
     ports:
       - 8211:8211/udp
       - 27015:27015/udp

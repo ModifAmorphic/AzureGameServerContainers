@@ -40,5 +40,5 @@ env_vars = {
   ENGINE_r_ThreadedRendering =  "/Script/Engine.RendererSettings/r.ThreadedRendering=True"
   ENGINE_r_ThreadedPhysics =  "/Script/Engine.RendererSettings/r.ThreadedPhysics=True"
   DISCORD_STARTING_MESSAGE =  "$${PAL_ServerName} is starting..."
-  DISCORD_READY_MESSAGE =  "$${PAL_ServerName} is ready for players!"
+  DISCORD_READY_MESSAGE = "$${PAL_ServerName} is ready for players!\\nServer: $${SERVER_PUBLIC_IP}:$${PORT}\\nPassword: $${PAL_ServerPassword}"
 }
