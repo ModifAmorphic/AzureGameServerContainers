@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{AC471388-01DE-41DA-9E35-10D3395E2F09}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scheduler", "scheduler", "{14A86CA9-3CBA-40E1-B8A8-B7FA7261EC24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "functions", "functions", "{BAE327A4-9371-4141-9EE4-58D78391E5D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameServers.Scheduler", "shared\scheduler\functions\StartStopGameServers\GameServers.Scheduler.csproj", "{FDF827FE-E3DD-4C72-B780-675AA148BB0C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FDF827FE-E3DD-4C72-B780-675AA148BB0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDF827FE-E3DD-4C72-B780-675AA148BB0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDF827FE-E3DD-4C72-B780-675AA148BB0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDF827FE-E3DD-4C72-B780-675AA148BB0C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{14A86CA9-3CBA-40E1-B8A8-B7FA7261EC24} = {AC471388-01DE-41DA-9E35-10D3395E2F09}
+		{BAE327A4-9371-4141-9EE4-58D78391E5D8} = {14A86CA9-3CBA-40E1-B8A8-B7FA7261EC24}
+		{FDF827FE-E3DD-4C72-B780-675AA148BB0C} = {BAE327A4-9371-4141-9EE4-58D78391E5D8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A19D0EE4-93E8-4894-BD88-00F41197CDC0}
+	EndGlobalSection
+EndGlobal

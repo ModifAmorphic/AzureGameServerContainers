@@ -60,12 +60,12 @@ startServer() {
         rm -f "${SERVER_PATH}/firstrun"
         export SERVER_FIRST_RUN=1
     else
-        if (( firstStartCalls > 1 )); then
+        if (( $firstStartCalls > 1 )); then
             lwarn "Detected multiple "first start" attempts to initialize config files. Abandoning future attempts until next run."
             # attempt to delete firstrun file if it still exists. Ignore errors.
             [[ -f "${SERVER_PATH}/firstrun" ]] && set +e && rm -f "${SERVER_PATH}/firstrun" && set -e
         fi
-        if (( $SERVER_FIRST_RUN == 0 )); then configureServer; fi
+        if (( S$ERVER_FIRST_RUN < 1 )); then configureServer; fi
         export SERVER_FIRST_RUN=0
     fi
 
